@@ -1,6 +1,6 @@
 {
-  "id": "demo.app",
-  "name": "Demo",
+  "id": "p2p.pkoin.app",
+  "name": "An application for P2P exchange of PKOIN.",
   "description": "Demo application",
   "author": "TQsidN3F7qcctiJ1Y5FgZnTjzQqQCt6ydG",
   "permissions": ["account", "payment", "sign"]
