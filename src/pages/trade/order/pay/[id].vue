@@ -2,7 +2,7 @@
 import { Clock, FileText, Loader2, Upload, XCircle } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { SdkService } from '~/composables'
-
+import { api } from '~/composables/api'
 const orderState = ref<
   'created' | 'uploading' | 'sending' | 'failed' | 'waiting' | 'completed'
 >('created')
@@ -11,8 +11,11 @@ const paymentProof = ref<File | null>(null)
 const paymentProofPreview = ref<string | null>(null)
 const paymentProofName = ref<string | null>(null)
 const orderData = ref()
+const route = useRoute()
+const router = useRouter()
 
 onMounted(() => {
+  //@ts-ignore
   orderData.value = JSON.parse(sessionStorage.getItem('orderData'))
 })
 
@@ -48,6 +51,10 @@ async function confirmPayment() {
   if (!paymentProof.value)
     return
 
+  if (!('id' in route.params)) {
+    return
+  }
+
   orderState.value = 'sending'
   const account = await SdkService.getAccount()
 
@@ -56,23 +63,32 @@ async function confirmPayment() {
   formData.append('unitPrice', orderData.value.unitPrice)
   formData.append('fiatCurrency', orderData.value.fiatCurrency)
   formData.append('counterpartyAddress', account?.address ?? '')
-  formData.append('label',  orderData.value.paymentMethod)
+  formData.append('label', orderData.value.paymentMethod)
   formData.append('currency', orderData.value.currency)
 
   try {
-    const response = await fetch(`http://localhost:3000/payments/26/add-order`, {
+    const response = await api.fetcher<any>(`/payments/${route.params.id}/add-order`, {
       method: 'POST',
-      body: formData,
+      data: formData,
     })
 
-    if (!response.ok) {
+    if (!response) {
       throw new Error('Ошибка при отправке данных')
     }
 
     const data = await SdkService.getOrCreateRoom(orderData.value.makerAddress ?? '')
+
+    const userProfiles = await SdkService.rpc('getuserprofile', [account?.address])
+
+   const messagesForSend = {
+  ru: 'Ваши PKOIN были куплены. Пожалуйста, подтвердите сделку по следующей ссылке: [ссылка на подтверждение]',
+  default: 'Your PKOIN have been purchased. Please confirm the transaction using the following link: [confirmation link]',
+}
     if (data?.roomid) {
-      await SdkService.sendMessage(data.roomid, 'fsfsa')
+      //@ts-ignore
+      await SdkService.sendMessage(data.roomid, messagesForSend?.[userProfiles?.[0]?.l] ||messagesForSend.default )
     }
+    router.push(`/trade/order/pay/confirm?orderId=${response.order?.id}&paymentId=${response.order.paymentId}`)
     orderState.value = 'waiting'
   }
   catch (error) {

@@ -22,6 +22,8 @@ declare module 'vue-router/auto-routes' {
     '/[...all]': RouteRecordInfo<'/[...all]', '/:all(.*)', { all: ParamValue<true> }, { all: ParamValue<false> }>,
     '/trade/all-payments/': RouteRecordInfo<'/trade/all-payments/', '/trade/all-payments', Record<never, never>, Record<never, never>>,
     '/trade/order/[id]': RouteRecordInfo<'/trade/order/[id]', '/trade/order/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    '/trade/order_copy/': RouteRecordInfo<'/trade/order_copy/', '/trade/order_copy', Record<never, never>, Record<never, never>>,
+    '/trade/order/pay/[id]': RouteRecordInfo<'/trade/order/pay/[id]', '/trade/order/pay/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    '/trade/order/pay/confirm/': RouteRecordInfo<'/trade/order/pay/confirm/', '/trade/order/pay/confirm', Record<never, never>, Record<never, never>>,
+    '/trade/orders/': RouteRecordInfo<'/trade/orders/', '/trade/orders', Record<never, never>, Record<never, never>>,
   }
 }

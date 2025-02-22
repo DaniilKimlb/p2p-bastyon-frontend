@@ -1,4 +1,5 @@
 export interface PaymentMethod {
+  id?: number
   details: {
     currency: string[]
     paymentMethods: string

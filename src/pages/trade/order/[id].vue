@@ -8,6 +8,7 @@ import { useRoute } from 'vue-router'
 import * as z from 'zod'
 import { FormField } from '~/components/ui/form'
 import Big from 'big.js'
+import { api } from "~/composables/api";
 
 const { pkoinPrice } = usePKoinPrice()
 const route = useRoute()
@@ -15,7 +16,7 @@ const route = useRoute()
 const paymentData = ref<PaymentMethod>()
 const isLoading = ref(true)
 const errorMessage = ref(null)
-
+const router = useRouter()
 const selectedCurrency = computed(() => route.query?.fiatCurrency)
 
 async function fetchPaymentDetails() {
@@ -26,17 +27,13 @@ async function fetchPaymentDetails() {
     if (!('id' in route.params)) {
       return
     }
-    const response = await fetch(`http://localhost:3000/payments/${route.params.id}`)
-    const data = await response.json()
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Ошибка загрузки данных')
-    }
-
-    paymentData.value = data.data
+    const response = await api.fetcher<any>(`/payments/${route.params.id}`, {
+      method: "GET"
+    })
+    paymentData.value = response.data
   }
-  catch (error) {
-    errorMessage.value = error.message
+  catch (error: any) {
+    errorMessage.value = error?.message
   }
   finally {
     isLoading.value = false
@@ -80,7 +77,7 @@ const formSchema = computed(() =>
       ),
       amount: z.number().min(
         minPkoin.value ?? 0,
-        `Минимальная сумма: ${minPkoin.value} ${selectedCurrency.value}`,
+        `Минимальная сумма: ${minPkoin.value} PKOIN`,
       ).max(
         maxPkoin.value ?? 0,
         `Максимальная сумма: ${maxPkoin.value} PKOIN`,
@@ -102,7 +99,7 @@ const receivedPkoin = computed(() => {
 
   return new Big(amountFiat.value ?? 0)
     .div(new Big(pkoinPrice.value.RUB).times(paymentData.value.margin))
-    .toPrecision(6) // Используем точность вместо округления
+    .toPrecision(6)
 })
 
 const receivedFiat = computed(() => {
@@ -110,7 +107,7 @@ const receivedFiat = computed(() => {
 
   return new Big(amount.value ?? 0)
     .times(new Big(pkoinPrice.value.RUB).times(paymentData.value.margin))
-    .toPrecision(6) // Аналогично, чтобы избежать дичи с округлением
+    .toPrecision(6)
 })
 
 watch(amountFiat, (newVal) => {
@@ -168,6 +165,7 @@ const onSubmit = form.handleSubmit((values) => {
   }
 
   sessionStorage.setItem('orderData', JSON.stringify(orderData))
+  router.push('/trade/order_copy')
 })
 </script>
 
@@ -221,7 +219,7 @@ const onSubmit = form.handleSubmit((values) => {
         <div class="flex items-center justify-between mb-4">
           <span class="text-muted-foreground">Цена</span>
           <span class="text-green-500 text-xl">{{
-(pkoinPrice?.RUB ?? 0) * (paymentData?.margin || 0)
+((pkoinPrice?.RUB ?? 0) * (paymentData?.margin || 0)).toFixed(2)
           }}</span>
         </div>
 

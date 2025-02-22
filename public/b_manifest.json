@@ -3,5 +3,5 @@
   "name": "Demo",
   "description": "Demo application",
   "author": "TQsidN3F7qcctiJ1Y5FgZnTjzQqQCt6ydG",
-  "permissions": ["account"]
+  "permissions": ["account", "payment", "sign"]
 }

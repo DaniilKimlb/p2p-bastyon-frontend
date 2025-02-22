@@ -59,6 +59,14 @@ export class SdkService {
     });
   }
 
+  public static async sign(scope: string) {
+    this.ensureInitialized();
+    //@ts-ignore
+    return this.sdk!.sign(scope).catch((error) => {
+      console.error("Error sign:", error);
+    });
+  }
+
   /**
    * Example of an RPC call. It is recommended to use a server for secure execution.
    * @param method The RPC method to call.
@@ -80,6 +88,21 @@ export class SdkService {
       throw error;
     }
   }
+
+  public static async payment(
+    recievers: any,
+
+  ) {
+    this.ensureInitialized();
+    try {
+      const result = await this.sdk!.payment({recievers, feemode: 'exclude' });
+      return result;
+    } catch (error) {
+      console.error("Error during RPC call:", error);
+      throw error;
+    }
+  }
+
 
   /**
    * Adds an event listener for a specific SDK event.

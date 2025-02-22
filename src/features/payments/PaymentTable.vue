@@ -5,6 +5,7 @@ import { ref, watchEffect, computed } from 'vue'
 import { usePKoinPrice } from '~/composables/usePKoinPrice'
 import { cn } from '~/composables/utils'
 import { getPaymentColumns, getTableOptions } from './PaymentColumns'
+import { api } from '~/composables/api'
 
 const { pkoinPrice } = usePKoinPrice()
 
@@ -21,9 +22,10 @@ const selectedCurrency = ref('rub')
 const fetchPayments = async () => {
   isLoading.value = true
   try {
-    const response = await fetch(`http://localhost:3000/payments?currency=${selectedCurrency.value.toUpperCase()}`)
-    const data = await response.json()
-    paymentData.value = data.data
+    const response = await api.fetcher<{data: any}>(`/payments?currency=${selectedCurrency.value.toUpperCase()}`, {
+      method: "GET"
+    })
+    paymentData.value = response.data
   } catch (error) {
     console.error('Ошибка при загрузке данных:', error)
   } finally {
@@ -37,8 +39,8 @@ watchEffect(() => {
   fetchPayments()
 })
 
-const columns = computed(() => getPaymentColumns(pkoinPrice, () => {
-  router.push('/trade/order')
+const columns = computed(() => getPaymentColumns(pkoinPrice, (orderId) => {
+  router.push(`/trade/order/${orderId}`)
 }))
 const tableOptions = computed(() => getTableOptions(paymentData, columns.value))
 

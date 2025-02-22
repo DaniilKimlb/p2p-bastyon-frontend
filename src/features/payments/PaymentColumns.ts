@@ -13,7 +13,7 @@ const columnHelper = createColumnHelper<PaymentMethod>();
 
 export function getPaymentColumns(
   pkoinPrice: Ref<{ RUB: number; USD: number } | null>,
-  onBuy: (rowId: string) => void,
+  onBuy: (rowId?: number) => void,
 ): ColumnDef<PaymentMethod, any>[] {
   return [
     columnHelper.display({
@@ -97,7 +97,7 @@ export function getPaymentColumns(
             variant: "secondary",
             onClick: () => {
               row.toggleExpanded();
-              onBuy(row.id);
+              onBuy(row.original.id);
             },
           },
           () => "Купить PKOIN",
