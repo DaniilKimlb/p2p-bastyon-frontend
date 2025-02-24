@@ -20,15 +20,13 @@ interface Config<P> {
     url: string,
     config: Config<P>,
   ): Promise<T> {
-
-    await new Promise((res) => setTimeout(() => res(), 3000))
-    // const signature = await SdkService.sign("auth");
+    const signature = await SdkService.sign("auth");
     const { data } = await this.api<T>(
       url,
       {
         headers: {
           ...config.options?.headers,
-          // Signature: JSON.stringify(signature),
+          Signature: JSON.stringify(signature),
         },
         ...config.options,
       },
