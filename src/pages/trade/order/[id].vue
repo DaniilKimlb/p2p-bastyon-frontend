@@ -231,7 +231,7 @@ const onSubmit = form.handleSubmit((values) => {
           }}</span>
         </div>
 
-        <form id="dad" class="space-y-4" novalidate @submit="onSubmit">
+        <!-- <form id="dad" class="space-y-4" novalidate @submit="onSubmit">
           <div class="text-muted-foreground mb-2">
             Вы платите
           </div>
@@ -334,7 +334,7 @@ const onSubmit = form.handleSubmit((values) => {
               Купить PKOIN
             </Button>
           </div>
-        </form>
+        </form> -->
       </CardContent>
     </Card>
   </Card>
