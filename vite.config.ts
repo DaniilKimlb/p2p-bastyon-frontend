@@ -17,6 +17,9 @@ export default defineConfig({
       '~/': `${path.resolve(__dirname, 'src')}/`,
     },
   },
+  define: {
+    "process.env": process.env,
+  },
   base: import.meta.env.BASE_URL,
   plugins: [
     VueMacros({
