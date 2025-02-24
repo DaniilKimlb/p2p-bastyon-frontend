@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PaymentMethod } from '~/features/payments/types/PaymentMethod'
 import { toTypedSchema } from '@vee-validate/zod'
-import { ChevronDown, Landmark } from 'lucide-vue-next'
+import { ChevronDown, Landmark, Loader2 } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
 import { computed, ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
@@ -170,7 +170,15 @@ const onSubmit = form.handleSubmit((values) => {
 </script>
 
 <template>
-  <Card
+  <div v-if="isLoading">
+        <h2 class="text-2xl font-semibold mb-6 text-center">
+          Загружаем данные...
+        </h2>
+        <div class="flex items-center justify-center">
+          <Loader2 class="text-primary w-8 h-8 animate-spin" />
+        </div>
+      </div>
+  <Card v-else
     class="max-w-screen-xl border-none mx-auto md:flex space-y-6 md:space-y-0 bg-card text-foreground"
   >
     <div class="md:flex-1 md:pr-6">
