@@ -22,7 +22,7 @@ const selectedCurrency = ref('RUB')
 const fetchPayments = async () => {
   isLoading.value = true
   try {
-    const response = await api.fetcher<{data: any}>(`/payments?currency=${selectedCurrency}`, {
+    const response = await api.fetcher<{data: any}>(`/payments?currency=${selectedCurrency.value}`, {
       method: "GET"
     })
     paymentData.value = response.data
