@@ -285,7 +285,7 @@ const onSubmit = form.handleSubmit((values) => {
               <FormMessage />
             </FormItem>
           </FormField>
-          <!-- <FormField name="paymentMethod">
+          <FormField name="paymentMethod">
             <FormItem>
               <div class="text-muted-foreground mb-2">
                 Способ оплаты
@@ -301,7 +301,7 @@ const onSubmit = form.handleSubmit((values) => {
                   </Button>
                 </DialogTrigger>
 
-                <DialogContent>
+                <DialogContent class="">
                   <DialogHeader>
                     <DialogTitle>Способы оплаты</DialogTitle>
                   </DialogHeader>
@@ -324,7 +324,7 @@ const onSubmit = form.handleSubmit((values) => {
               </Dialog>
               <FormMessage />
             </FormItem>
-          </FormField> -->
+          </FormField>
 
           <div class="grid grid-cols-2 gap-3">
             <Button variant="destructive">
