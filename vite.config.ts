@@ -17,7 +17,7 @@ export default defineConfig({
       '~/': `${path.resolve(__dirname, 'src')}/`,
     },
   },
-  base: '/p2p',
+  base: import.meta.env.VITE_APP_BASE_URL,
   plugins: [
     VueMacros({
       defineOptions: false,
