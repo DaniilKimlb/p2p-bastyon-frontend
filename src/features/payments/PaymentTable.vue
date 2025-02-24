@@ -17,7 +17,7 @@ const expanded = ref({})
 const isLoading = ref(true)
 const paymentData = ref([])
 
-const selectedCurrency = ref('rub')
+const selectedCurrency = ref('RUB')
 
 const fetchPayments = async () => {
   isLoading.value = true
@@ -40,7 +40,7 @@ watchEffect(() => {
 })
 
 const columns = computed(() => getPaymentColumns(pkoinPrice, (orderId) => {
-  router.push(`/trade/order/${orderId}`)
+  router.push(`/trade/order/${orderId}?fiatCurrency=${selectedCurrency}`)
 }))
 const tableOptions = computed(() => getTableOptions(paymentData, columns.value))
 
@@ -68,13 +68,13 @@ const table = useVueTable({
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="rub">
+        <SelectItem value="RUB">
           <div class="flex items-center gap-1">
             <RussianRuble class="w-4 h-4" />
             RUB
           </div>
         </SelectItem>
-        <SelectItem value="usd">
+        <SelectItem value="USD">
           <div class="flex items-center gap-1">
             <DollarSign class="w-4 h-4" />
             USD

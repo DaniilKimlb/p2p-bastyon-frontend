@@ -86,7 +86,7 @@ async function confirmPayment() {
 }
     if (data?.roomid) {
       //@ts-ignore
-      await SdkService.sendMessage(data.roomid, messagesForSend?.[userProfiles?.[0]?.l] ||messagesForSend.default )
+      await SdkService.sendMessage(data.roomid, messagesForSend?.[userProfiles?.[0]?.l] ||messagesForSend?.default )
     }
     router.push(`/trade/order/pay/confirm?orderId=${response.order?.id}&paymentId=${response.order.paymentId}`)
     orderState.value = 'waiting'
