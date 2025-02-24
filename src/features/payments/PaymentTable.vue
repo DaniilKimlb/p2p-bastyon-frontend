@@ -22,7 +22,7 @@ const selectedCurrency = ref('RUB')
 const fetchPayments = async () => {
   isLoading.value = true
   try {
-    const response = await api.fetcher<{data: any}>(`/payments?currency=${selectedCurrency.value.toUpperCase()}`, {
+    const response = await api.fetcher<{data: any}>(`/payments?currency=${selectedCurrency}`, {
       method: "GET"
     })
     paymentData.value = response.data
@@ -40,7 +40,7 @@ watchEffect(() => {
 })
 
 const columns = computed(() => getPaymentColumns(pkoinPrice, (orderId) => {
-  router.push(`/trade/order/${orderId}?fiatCurrency=${selectedCurrency}`)
+  router.push(`/trade/order/${orderId}?fiatCurrency=${selectedCurrency.value}`)
 }))
 const tableOptions = computed(() => getTableOptions(paymentData, columns.value))
 
