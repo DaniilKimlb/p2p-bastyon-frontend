@@ -17,7 +17,7 @@ export default defineConfig({
       '~/': `${path.resolve(__dirname, 'src')}/`,
     },
   },
-  base: import.meta.env.VITE_APP_BASE_URL,
+  base: import.meta.env.BASE_URL,
   plugins: [
     VueMacros({
       defineOptions: false,
