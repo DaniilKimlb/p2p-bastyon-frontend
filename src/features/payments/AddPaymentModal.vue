@@ -5,13 +5,13 @@
 
     <!-- Модальное окно -->
     <Dialog v-model:open="isModalOpen">
-      <DialogContent>
+      <DialogContent class="sm:max-w-[425px] grid-rows-[auto_minmax(0,1fr)_auto] p-0 max-h-[90dvh]">
         <DialogHeader>
           <DialogTitle>Настроить платеж</DialogTitle>
         </DialogHeader>
 
         <!-- Форма Vee-Validate -->
-        <form @submit="submitPayment" class="space-y-4 overflow-y-auto h-[650px]" novalidate>
+        <form @submit="submitPayment" class="space-y-4 overflow-y-auto" novalidate>
           <!-- Поле: Мин. PKOIN -->
           <FormField name="minPkoin" v-slot="{ componentField }">
             <div>

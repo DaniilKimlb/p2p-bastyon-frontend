@@ -301,7 +301,7 @@ const onSubmit = form.handleSubmit((values) => {
                   </Button>
                 </DialogTrigger>
 
-                <DialogContent class="">
+                <DialogContent class="sm:max-w-[425px]">
                   <DialogHeader>
                     <DialogTitle>Способы оплаты</DialogTitle>
                   </DialogHeader>
