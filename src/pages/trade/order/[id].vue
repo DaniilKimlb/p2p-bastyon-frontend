@@ -170,7 +170,7 @@ const onSubmit = form.handleSubmit((values) => {
 </script>
 
 <template>
-  <div v-if="isLoading">
+  <div v-if="isLoading || !pkoinPrice">
         <h2 class="text-2xl font-semibold mb-6 text-center">
           Загружаем данные...
         </h2>
