@@ -154,7 +154,7 @@ function selectPaymentMethod(method: string) {
 const onSubmit = form.handleSubmit((values) => {
   const orderData = {
     unitPrice: (pkoinPrice.value?.RUB ?? 0) * (paymentData.value?.margin ?? 0),
-    amountFlat: values.amountFiat,
+    fiatPrice: values.amountFiat,
     amount: values.amount,
     fiatCurrency: selectedCurrency.value,
     paymentMethod: values.paymentMethod,

@@ -17,6 +17,7 @@ const router = useRouter()
 onMounted(() => {
   //@ts-ignore
   orderData.value = JSON.parse(sessionStorage.getItem('orderData'))
+  console.log(orderData.value, 'orderData')
 })
 
 function handleFileUpload(event: Event) {
@@ -62,8 +63,9 @@ async function confirmPayment() {
   formData.append('paymentProof', paymentProof.value)
   formData.append('unitPrice', orderData.value.unitPrice)
   formData.append('fiatCurrency', orderData.value.fiatCurrency)
+  formData.append('fiatPrice', orderData.value.fiatPrice)
   formData.append('counterpartyAddress', account?.address ?? '')
-  formData.append('label', orderData.value.paymentMethod)
+  formData.append('paymentMethod', orderData.value.paymentMethod)
   formData.append('currency', orderData.value.currency)
 
   try {
@@ -131,7 +133,7 @@ function retryUpload() {
             </div>
             <div class="flex flex-col">
               <span class="text-muted-foreground">Сумма в фиате</span>
-              <span class="font-semibold">{{ orderData?.amountFlat }} {{ orderData?.fiatCurrency }}</span>
+              <span class="font-semibold">{{ orderData?.fiatPrice }} {{ orderData?.fiatCurrency }}</span>
             </div>
           </div>
         </div>
