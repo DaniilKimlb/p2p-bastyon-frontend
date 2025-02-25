@@ -88,7 +88,7 @@ const formSchema = computed(() =>
 )
 
 const form = useForm({
-  validationSchema: formSchema,
+  validationSchema: () => formSchema.value,
 })
 
 const [amountFiat] = form.defineField('amountFiat')

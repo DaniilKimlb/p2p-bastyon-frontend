@@ -4,11 +4,9 @@ import { X } from 'lucide-vue-next'
 import {
   DialogClose,
   DialogContent,
-  type DialogContentEmits,
   type DialogContentProps,
   DialogOverlay,
   DialogPortal,
-  useForwardPropsEmits,
 } from 'radix-vue'
 import { type HTMLAttributes } from 'vue'
 
