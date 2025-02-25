@@ -79,7 +79,7 @@ async function confirmPayment() {
     }
 
     const data = await SdkService.getOrCreateRoom(orderData.value.makerAddress ?? '')
-
+  console.log(data, 'data room')
     const userProfiles = await SdkService.rpc('getuserprofile', [account?.address])
 
    const messagesForSend = {
