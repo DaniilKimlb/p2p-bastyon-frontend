@@ -81,6 +81,7 @@ async function confirmPayment() {
     const data = await SdkService.getOrCreateRoom(orderData.value.makerAddress ?? '')
   console.log(data, 'data room')
     const userProfiles = await SdkService.rpc('getuserprofile', [account?.address])
+  console.log(userProfiles, 'userProfiles room')
 
    const messagesForSend = {
   ru: 'Ваши PKOIN были куплены. Пожалуйста, подтвердите сделку по следующей ссылке: [ссылка на подтверждение]',
