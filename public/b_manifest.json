@@ -2,6 +2,6 @@
   "id": "p2p.pkoin.app",
   "name": "P2P PKOIN app",
   "description": "An application for P2P exchange of PKOIN.",
-  "author": "PC1kpAnbE4ovPXWGEzDtPW1fGP6XsqcVgZ",
+  "author": "PKzsFvWfvbKoAvBw8Wh1oGPMTChSwwN3aU",
   "permissions": ["account", "payment", "sign", "chat"]
 }
