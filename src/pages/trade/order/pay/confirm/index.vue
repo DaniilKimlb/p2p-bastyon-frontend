@@ -4,7 +4,7 @@ import { ref, onMounted, computed } from 'vue'
 import { SdkService } from '~/composables'
 import { api } from '~/composables/api'
 import { APP_API_URL } from '~/config'
-const orderState = ref<'loading' | 'waiting' | 'confirming' | 'rejected' | 'failed' | 'completed'>('loading')
+const orderState = ref<'loading' | 'pending' | 'confirming' | 'canceled' | 'failed' | 'paid'>('loading')
 const paymentProof = ref<string | null>(null)
 const orderData = ref<any>(null)
 const account = ref<any>(null)
@@ -48,14 +48,14 @@ async function updateOrderStatus(status: 'paid' | 'canceled') {
       method: 'PATCH',
       data: { status },
     })
-    orderState.value = status === 'paid' ? 'completed' : 'rejected'
+    orderState.value = status === 'paid' ? 'paid' : 'canceled'
   } catch (error) {
     console.error('Ошибка обновления статуса:', error)
     orderState.value = 'failed'
   }
 }
 
-const isMaker = computed(() => orderData.value?.makerAddress === "")
+const isMaker = computed(() => orderData.value?.makerAddress === account.value.address)
 </script>
 
 <template>
@@ -112,21 +112,21 @@ const isMaker = computed(() => orderData.value?.makerAddress === "")
         </div>
       </div>
 
-      <div v-else-if="orderState === 'waiting'">
+      <div v-else-if="orderState === 'pending'">
         <h2 class="text-2xl font-semibold mb-6 text-center">Ожидание подтверждения</h2>
         <p class="text-muted-foreground text-center text-lg">
           Макер подтвердит оплату в течение 30 минут, и PKOIN переведутся к вам.
         </p>
       </div>
 
-      <div v-else-if="orderState === 'completed'">
+      <div v-else-if="orderState === 'paid'">
         <h2 class="text-2xl font-semibold mb-6 text-center text-green-500">Оплата подтверждена</h2>
         <p class="text-muted-foreground text-center text-lg">
           Ваша транзакция успешно завершена.
         </p>
       </div>
 
-      <div v-else-if="orderState === 'rejected'">
+      <div v-else-if="orderState === 'canceled'">
         <h2 class="text-2xl font-semibold mb-6 text-center text-destructive">Оплата отклонена</h2>
         <p class="text-muted-foreground text-center text-lg">
           Макер отклонил ваш платеж.
