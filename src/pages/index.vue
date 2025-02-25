@@ -11,10 +11,17 @@ const account = ref()
 onMounted(async () => {
   account.value = await SdkService.getAccount()
 })
-
-if(account.value.address !== 'PKzsFvWfvbKoAvBw8Wh1oGPMTChSwwN3aU'){
+watchEffect(() => {
+  if(!account.value) return
+  if(account.value?.address !== 'PKzsFvWfvbKoAvBw8Wh1oGPMTChSwwN3aU'){
   router.push(`trade/all-payments/`)
 }else {
   router.push('/trade/orders')
 }
+})
+
 </script>
+
+<template>
+  <div class="text-center py-10">Загрузка данных...</div>
+</template>
