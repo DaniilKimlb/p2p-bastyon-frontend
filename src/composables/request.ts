@@ -28,6 +28,10 @@ class RequestError<T> extends Error {
 	}
 }
 
+function isObject(o: any) {
+  return Object.prototype.toString.call(o) === '[object Object]'
+}
+
 export const request = (function create(baseURL = '') {
 	function request<T>(
 		uri: string,
@@ -38,10 +42,10 @@ export const request = (function create(baseURL = '') {
 		const headers: Record<string, string> = { ...options?.headers };
 		const responseType = options?.responseType || 'json';
 		let body = data as BodyInit;
-		if (typeof data === 'object') {
-			body = JSON.stringify(data);
-			headers['Content-Type'] = 'application/json';
-		}
+	  if (isObject(data)) {
+      body = JSON.stringify(data)
+      headers['Content-Type'] = 'application/json'
+    }
 
 		const url = `${options?.baseURL || baseURL}${uri}`;
 		const init = { method, headers, body };
