@@ -125,11 +125,11 @@ const showPaymentModal = ref(false)
 const selectedPaymentMethod = ref<string | null>(null)
 
 const paymentMethods = computed(() => {
-  return paymentData.value?.details.map(p => p.paymentMethods) ?? []
+  return paymentData.value?.details.map(p => p.paymentMethod) ?? []
 })
 
 const bankInstructions = computed(() => {
-  return Object.fromEntries(paymentData.value?.details.map(p => [p.paymentMethods, p.instructions]) ?? [])
+  return Object.fromEntries(paymentData.value?.details.map(p => [p.paymentMethod, p.instructions]) ?? [])
 })
 
 const makerConditionsTitle = computed(() =>

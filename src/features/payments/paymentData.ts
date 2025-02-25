@@ -5,7 +5,7 @@ export const paymentData: PaymentMethod[] = [
     details: [
       {
         currency: ['RUB', 'USD'],
-        paymentMethods: 'Банковский перевод',
+        paymentMethod: 'Банковский перевод',
         instructions: 'ДА КАК_ТО ТАК',
         availableFor: ['russia'],
       },

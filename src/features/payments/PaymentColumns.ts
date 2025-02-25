@@ -82,7 +82,7 @@ export function getPaymentColumns(
           "div",
           { class: "flex gap-2 flex-wrap" },
           row.original.details?.map((detail) =>
-            h(Badge, {}, () => detail.paymentMethods),
+            h(Badge, {}, () => detail.paymentMethod),
           ),
         );
       },

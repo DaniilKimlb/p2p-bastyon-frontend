@@ -71,7 +71,7 @@
           >
             <div class="flex flex-wrap gap-2">
               <!-- Метод платежа -->
-              <Select v-model="field.value.paymentMethods">
+              <Select v-model="field.value.paymentMethod">
                 <SelectTrigger>
                   <SelectValue placeholder="Метод платежа" />
                 </SelectTrigger>
@@ -175,7 +175,7 @@ const paymentSchema = computed(() =>
         .array(
           z.object({
             currency: z.string(),
-            paymentMethods: z.string(),
+            paymentMethod: z.string(),
             language: z.string(),
             instructions: z.string(),
           })
@@ -197,7 +197,7 @@ const form = useForm({
     details: [
       {
         currency: "",
-        paymentMethods: "",
+        paymentMethod: "",
         language: "",
         instructions: "",
       },
@@ -225,9 +225,8 @@ const submitPayment = form.handleSubmit(async (values) => {
     await api.fetcher("/add-payment", {
       method: "POST",
       data: {...values, details: values.details.map(d => ({
-        //@ts-ignore
+        ...d,
         currency: [d.currency],
-        ...d
       }))},
     });
 
