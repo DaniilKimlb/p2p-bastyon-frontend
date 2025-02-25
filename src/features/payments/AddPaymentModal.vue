@@ -5,7 +5,7 @@
 
     <!-- Модальное окно -->
     <Dialog v-model:open="isModalOpen">
-      <DialogContent class="sm:max-w-[425px] grid-rows-[auto_minmax(0,1fr)_auto] p-0 max-h-[90dvh]">
+      <DialogContent class="sm:max-w-[425px] grid-rows-[auto_minmax(0,1fr)_auto] p-2 max-h-[90dvh]">
         <DialogHeader>
           <DialogTitle>Настроить платеж</DialogTitle>
         </DialogHeader>
