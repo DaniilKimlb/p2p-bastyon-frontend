@@ -81,7 +81,7 @@ export class SdkService {
   ): Promise<unknown> {
     this.ensureInitialized();
     try {
-      const result = await this.sdk!.rpc(method, parameters);
+      const result = await this.sdk!.rpc(method, parameters, {});
       return result;
     } catch (error) {
       console.error("Error during RPC call:", error);
