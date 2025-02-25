@@ -6,7 +6,7 @@ import { useForm } from 'vee-validate'
 import { computed, ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import * as z from 'zod'
-import { FormField } from '~/components/ui/form'
+import { FormField, FormItem, FormControl, FormMessage } from '~/components/ui/form'
 import Big from 'big.js'
 import { api } from "~/composables/api";
 
@@ -65,8 +65,7 @@ const maxAmountFiat = computed(() =>
     : 0,
 )
 
-const formSchema = computed(() =>
-  toTypedSchema(
+const formSchema = computed(() => toTypedSchema(
     z.object({
       amountFiat: z.number().min(
         minAmountFiat.value,
@@ -84,12 +83,12 @@ const formSchema = computed(() =>
       ),
       paymentMethod: z.string().min(1, 'Выберите способ оплаты'),
     }),
-  ),
-)
+))
 
 const form = useForm({
   validationSchema: () => formSchema.value,
 })
+
 
 const [amountFiat] = form.defineField('amountFiat')
 const [amount] = form.defineField('amount')
@@ -231,7 +230,7 @@ const onSubmit = form.handleSubmit((values) => {
           }}</span>
         </div>
 
-        <form id="dad" class="space-y-4" novalidate @submit="onSubmit">
+        <form  id="dad" class="space-y-4" novalidate @submit="onSubmit">
           <div class="text-muted-foreground mb-2">
             Вы платите
           </div>
@@ -330,8 +329,10 @@ const onSubmit = form.handleSubmit((values) => {
             <Button variant="destructive">
               Отменить
             </Button>
-            <Button form="dad" type="submit">
-              Купить PKOIN
+            <Button as-child form="dad" type="submit">
+              <button>
+                Купить PKOIN
+              </button>
             </Button>
           </div>
         </form>
