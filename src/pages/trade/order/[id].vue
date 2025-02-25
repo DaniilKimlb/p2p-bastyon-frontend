@@ -86,7 +86,7 @@ const formSchema = computed(() => toTypedSchema(
 ))
 
 const form = useForm({
-  validationSchema: formSchema.value,
+  validationSchema: formSchema,
 })
 
 
@@ -164,7 +164,8 @@ const onSubmit = form.handleSubmit((values) => {
   }
 
   sessionStorage.setItem('orderData', JSON.stringify(orderData))
-  router.push('/trade/order_copy')
+  //@ts-ignore
+  router.push(`/trade/order/pay/${route.params.id}`)
 })
 </script>
 
