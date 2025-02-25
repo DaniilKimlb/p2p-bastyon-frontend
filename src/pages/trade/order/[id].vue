@@ -86,7 +86,7 @@ const formSchema = computed(() => toTypedSchema(
 ))
 
 const form = useForm({
-  validationSchema: () => formSchema.value,
+  validationSchema: formSchema.value,
 })
 
 
@@ -170,13 +170,13 @@ const onSubmit = form.handleSubmit((values) => {
 
 <template>
   <div v-if="isLoading || !pkoinPrice">
-        <h2 class="text-2xl font-semibold mb-6 text-center">
-          Загружаем данные...
+    <h2 class="text-2xl font-semibold mb-6 text-xcenter">
+    Загружаем данные...
         </h2>
         <div class="flex items-center justify-center">
           <Loader2 class="text-primary w-8 h-8 animate-spin" />
         </div>
-      </div>
+    </div>
   <Card v-else
     class="max-w-screen-xl border-none mx-auto md:flex space-y-6 md:space-y-0 bg-card text-foreground"
   >
