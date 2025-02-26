@@ -27,9 +27,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mb-2">
-    <AddPaymentModal />
-  </div>
 
   <div v-if="fetchState === 'loading'" class="text-center py-4">
     ⏳ Загрузка данных...
@@ -38,9 +35,12 @@ onMounted(() => {
   <div v-else-if="fetchState === 'error'" class="text-center py-4 text-destructive">
     ❌ Ошибка загрузки данных. Попробуйте позже.
   </div>
-
-  <OrderTable v-else-if="fetchState === 'success'" :me-payment="mePayment" />
-
+  <template v-else-if="fetchState === 'success'">
+    <div class="mb-2">
+      <AddPaymentModal :me-payment="mePayment" />
+    </div>
+    <OrderTable :me-payment="mePayment" />
+  </template>
   <div v-else class="text-center py-4">
     🕵️ Нет данных.
   </div>

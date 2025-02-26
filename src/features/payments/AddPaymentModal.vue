@@ -167,6 +167,12 @@ import {
 } from "~/components/ui/select";
 import { api } from "~/composables/api";
 
+interface Props {
+  mePayment: any
+}
+
+const props = withDefaults(defineProps<Props>(), {})
+
 // Схема валидации (можно использовать z.coerce.number(), если нужно автопреобразование строки в число)
 const paymentSchema = computed(() =>
   toTypedSchema(
@@ -193,7 +199,7 @@ const paymentSchema = computed(() =>
 // Настраиваем форму и начальные значения
 const form = useForm({
   validationSchema: paymentSchema,
-  initialValues: {
+  initialValues: props.mePayment || {
     details: [
       {
         currency: "",
