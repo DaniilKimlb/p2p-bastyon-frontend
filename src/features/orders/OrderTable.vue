@@ -4,6 +4,14 @@ import { useVueTable, FlexRender } from "@tanstack/vue-table";
 import { getOrderColumns, getTableOptions } from "./OrderColumns";
 import { OrderData } from "./types/OrderData";
 import { api } from "~/composables/api";
+import { PaymentMethod } from "~/features/payments/types/PaymentMethod";
+
+
+interface Props {
+  mePayment: PaymentMethod
+}
+
+const props = withDefaults(defineProps<Props>(), {})
 
 const isLoading = ref(true);
 const orderData = ref<OrderData[]>([]);
@@ -18,7 +26,7 @@ const fetchOrders = async () => {
   isLoading.value = true;
   try {
     const response = await api.fetcher<any>(
-      `/payments/2/orders?page=${page.value}&limit=${limit.value}`, {
+      `/payments/${props.mePayment.id}/orders?page=${page.value}&limit=${limit.value}`, {
         method: "GET"
       }
     );
@@ -37,8 +45,14 @@ watchEffect(() => {
 });
 
 const columns = computed(() =>
-  getOrderColumns((address) => {
-    router.push(`/profile/${address}`);
+  getOrderColumns(({orderId}) => {
+    router.push({
+      path: '/trade/order/pay/confirm',
+      query: {
+        orderId,
+        paymentId: props.mePayment.id
+      }
+    });
   })
 );
 const tableOptions = computed(() => getTableOptions(orderData, columns.value));

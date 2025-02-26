@@ -25,12 +25,12 @@ const paymentStatus = {
 };
 
 export function getOrderColumns(
-  onViewProfile: (address: string) => void,
+  onView: (data: {orderId: string}) => void,
 ): ColumnDef<OrderData, any>[] {
   return [
     columnHelper.accessor("paymentMethod", {
       header: "Метод оплаты",
-      cell: ({ row }) => h("span", {}, row.original.label),
+      cell: ({ row }) => h("span", {}, row.original.paymentMethod),
     }),
     columnHelper.accessor("unitPrice", {
       header: "Цена за ед.",
@@ -53,7 +53,7 @@ export function getOrderColumns(
           {
             href: "#",
             class: "text-blue-500 hover:underline",
-            onClick: () => onViewProfile(row.original.counterpartyAddress),
+            onClick: () => onView({orderId: row.original.id}),
           },
           row.original.counterpartyAddress ?? "-",
         ),
