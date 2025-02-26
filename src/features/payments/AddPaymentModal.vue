@@ -11,130 +11,130 @@
         </DialogHeader>
 
         <!-- Форма Vee-Validate -->
-        <form @submit="submitPayment" class="space-y-4 overflow-y-auto" novalidate>
-          <!-- Поле: Мин. PKOIN -->
-          <FormField name="minPkoin" v-slot="{ componentField }">
-            <div>
-              <Input
-                type="number"
-                v-bind="componentField"
-                placeholder="Мин. PKOIN"
-              />
-              <FormMessage />
-            </div>
-          </FormField>
+        <form @submit="submitPayment" class="space-y-6 overflow-y-auto" novalidate>
+          <!-- 🔹 Основные настройки платежа -->
+          <div class="border rounded-lg p-4 bg-muted">
+            <h3 class="text-lg font-semibold mb-3">Основные параметры</h3>
 
-          <!-- Поле: Макс. PKOIN -->
-          <FormField name="maxPkoin" v-slot="{ componentField }">
-            <div>
-              <Input
-                type="number"
-                v-bind="componentField"
-                placeholder="Макс. PKOIN"
-              />
-              <FormMessage />
-            </div>
-          </FormField>
+            <FormField name="minPkoin" v-slot="{ componentField }">
+              <div>
+                <label class="block text-sm font-medium mb-1">Минимальный PKOIN</label>
+                <Input type="number" v-bind="componentField" placeholder="Введите мин. PKOIN" />
+                <FormMessage />
+              </div>
+            </FormField>
 
-          <!-- Поле: Маржа (%) -->
-          <FormField name="margin" v-slot="{ componentField }">
-            <div>
-              <Input type="number" v-bind="componentField" placeholder="Маржа (%)" />
-              <FormMessage />
-            </div>
-          </FormField>
+            <FormField name="maxPkoin" v-slot="{ componentField }">
+              <div>
+                <label class="block text-sm font-medium mb-1">Максимальный PKOIN</label>
+                <Input type="number" v-bind="componentField" placeholder="Введите макс. PKOIN" />
+                <FormMessage />
+              </div>
+            </FormField>
 
-          <!-- Поле: Телеграм -->
-          <FormField name="telegram" v-slot="{ componentField }">
-            <div>
-              <Input v-bind="componentField" placeholder="Телеграм" />
-              <FormMessage />
-            </div>
-          </FormField>
-
-          <!-- Поле: Время перевода (мин) -->
-          <FormField name="transferTime" v-slot="{ componentField }">
-            <div>
-              <Input v-bind="componentField" placeholder="Время перевода (мин)" />
-              <FormMessage />
-            </div>
-          </FormField>
-
-          <!-- Заголовок для способов оплаты -->
-          <div class="text-lg font-semibold">Способы оплаты</div>
-
-          <!-- Перебираем массив details -->
-          <div
-            v-for="(field, index) in fields"
-            :key="field.key"
-            class="border rounded p-3 mb-2"
-          >
-            <div class="flex flex-wrap gap-2">
-              <!-- Метод платежа -->
-              <Select v-model="field.value.paymentMethod">
-                <SelectTrigger>
-                  <SelectValue placeholder="Метод платежа" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Банковский перевод">Банковский перевод</SelectItem>
-                  <SelectItem value="PayPal">PayPal</SelectItem>
-                  <SelectItem value="Криптоперевод">Криптоперевод</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <!-- Язык -->
-              <Select v-model="field.value.language">
-                <SelectTrigger>
-                  <SelectValue placeholder="Язык" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Rus">Русский</SelectItem>
-                  <SelectItem value="Eng">Английский</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <!-- Инструкция -->
-              <Input
-                v-model="field.value.instructions"
-                placeholder="Инструкция"
-                class="flex-1"
-              />
-
-              <!-- Валюта -->
-              <Select v-model="field.value.currency">
-                <SelectTrigger>
-                  <SelectValue placeholder="Валюта" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="RUB">RUB</SelectItem>
-                  <SelectItem value="USD">USD</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <!-- Кнопка для удаления способа -->
-              <Button
-                variant="destructive"
-                class="w-full sm:w-auto"
-                @click="remove(index)"
-              >
-                Удалить
-              </Button>
-            </div>
+            <FormField name="margin" v-slot="{ componentField }">
+              <div>
+                <label class="block text-sm font-medium mb-1">Маржа (%)</label>
+                <Input type="number" v-bind="componentField" placeholder="Введите маржу" />
+                <FormMessage />
+              </div>
+            </FormField>
           </div>
 
-          <!-- Кнопка: Добавить способ оплаты -->
-          <Button
-            type="button"
-            variant="outline"
-            @click="push({ currency: '', paymentMethod: '', language: '', instructions: '' })"
-          >
-            ➕ Добавить способ оплаты
-          </Button>
+          <!-- 🔹 Контактные данные -->
+          <div class="border rounded-lg p-4 bg-muted">
+            <h3 class="text-lg font-semibold mb-3">Контактная информация</h3>
 
-          <!-- Низ диалогового окна -->
-          <DialogFooter>
-            <button type="submit">Сохранить</button>
-          </DialogFooter>
+            <FormField name="telegram" v-slot="{ componentField }">
+              <div>
+                <label class="block text-sm font-medium mb-1">Телеграм</label>
+                <Input v-bind="componentField" placeholder="Введите телеграм" />
+                <FormMessage />
+              </div>
+            </FormField>
+
+            <FormField name="transferTime" v-slot="{ componentField }">
+              <div>
+                <label class="block text-sm font-medium mb-1">Время перевода (мин)</label>
+                <Input v-bind="componentField" placeholder="Введите время перевода" />
+                <FormMessage />
+              </div>
+            </FormField>
+          </div>
+
+          <!-- 🔹 Способы оплаты -->
+          <div class="border rounded-lg p-4 bg-muted">
+            <h3 class="text-lg font-semibold mb-3">Способы оплаты</h3>
+
+            <div v-for="(field, index) in fields" :key="field.key" class="border rounded p-3 mb-4 bg-white shadow-sm">
+              <h4 class="text-md font-semibold mb-2">Способ {{ index + 1 }}</h4>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-sm font-medium mb-1">Метод платежа</label>
+                  <Select v-model="field.value.paymentMethod">
+                    <SelectTrigger>
+                      <SelectValue placeholder="Выберите метод" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Банковский перевод">Банковский перевод</SelectItem>
+                      <SelectItem value="PayPal">PayPal</SelectItem>
+                      <SelectItem value="Криптоперевод">Криптоперевод</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium mb-1">Язык</label>
+                  <Select v-model="field.value.language">
+                    <SelectTrigger>
+                      <SelectValue placeholder="Выберите язык" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Rus">Русский</SelectItem>
+                      <SelectItem value="Eng">Английский</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium mb-1">Валюта</label>
+                  <Select v-model="field.value.currency">
+                    <SelectTrigger>
+                      <SelectValue placeholder="Выберите валюту" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="RUB">RUB</SelectItem>
+                      <SelectItem value="USD">USD</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div class="col-span-1 md:col-span-2">
+                  <label class="block text-sm font-medium mb-1">Инструкция</label>
+                  <Input v-model="field.value.instructions" placeholder="Введите инструкцию" class="w-full" />
+                </div>
+              </div>
+
+              <Button class="w-full mt-3" variant="destructive" @click="remove(index)">Удалить способ</Button>
+            </div>
+
+            <Button type="button" variant="outline" @click="push({ currency: '', paymentMethod: '', language: '', instructions: '' })">
+              ➕ Добавить способ оплаты
+            </Button>
+          </div>
+
+          <!-- 🔹 Кнопка отправки -->
+          <div class="text-right">
+            <Button type="submit" class="px-6 py-2" :disabled="fetchState.loading">
+              <span v-if="fetchState.loading">Сохранение...</span>
+              <span v-else>Сохранить</span>
+            </Button>
+          </div>
+
+          <!-- Статус запроса -->
+          <p v-if="fetchState.success" class="text-green-600 text-center">✅ Успешно сохранено!</p>
+          <p v-if="fetchState.error" class="text-red-600 text-center">❌ Ошибка при сохранении</p>
         </form>
       </DialogContent>
     </Dialog>
@@ -146,14 +146,11 @@ import { ref, computed } from "vue";
 import { useForm, useFieldArray } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
-
-// UI-компоненты (примерные импорты)
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -167,13 +164,8 @@ import {
 } from "~/components/ui/select";
 import { api } from "~/composables/api";
 
-interface Props {
-  mePayment: any
-}
+const fetchState = ref({ loading: false, success: false, error: false });
 
-const props = withDefaults(defineProps<Props>(), {})
-
-// Схема валидации (можно использовать z.coerce.number(), если нужно автопреобразование строки в число)
 const paymentSchema = computed(() =>
   toTypedSchema(
     z.object({
@@ -187,60 +179,29 @@ const paymentSchema = computed(() =>
           })
         )
         .nonempty("Добавьте хотя бы один способ оплаты"),
-      minPkoin: z.number().int().positive("Мин. PKOIN должен быть положительным числом"),
-      maxPkoin: z.number().int().positive("Макс. PKOIN должен быть положительным числом"),
-      margin: z.number().positive("Маржа должна быть положительным числом"),
+      minPkoin: z.number().positive(),
+      maxPkoin: z.number().positive(),
+      margin: z.number().positive(),
       telegram: z.optional(z.string()),
       transferTime: z.string().min(1, "Время перевода обязательно"),
     })
   )
 );
 
-// Настраиваем форму и начальные значения
-const form = useForm({
-  validationSchema: paymentSchema,
-  initialValues: props.mePayment || {
-    details: [
-      {
-        currency: "",
-        paymentMethod: "",
-        language: "",
-        instructions: "",
-      },
-    ],
-    minPkoin: "",
-    maxPkoin: "",
-    margin: "",
-    telegram: "",
-    transferTime: "",
-  },
-});
+const form = useForm({ validationSchema: paymentSchema });
 
-// Настраиваем массив способов оплаты
 const { fields, push, remove } = useFieldArray("details");
-
-// Управление состоянием модального окна
 const isModalOpen = ref(false);
 
-// Обработка отправки формы
 const submitPayment = form.handleSubmit(async (values) => {
+  fetchState.value = { loading: true, success: false, error: false };
+
   try {
-    console.log("Отправка данных:", values);
-
-    // Отправка на ваш API
-    await api.fetcher("/add-payment", {
-      method: "POST",
-      data: {...values, details: values.details.map(d => ({
-        ...d,
-        currency: [d.currency],
-      }))},
-    });
-
-    // Сброс формы и закрытие диалога
-    form.resetForm();
-    isModalOpen.value = false;
+    await api.fetcher("/add-payment", { method: "POST", data: values });
+    fetchState.value = { loading: false, success: true, error: false };
+    setTimeout(() => (isModalOpen.value = false), 1000);
   } catch (error) {
-    console.error("Ошибка при отправке формы:", error);
+    fetchState.value = { loading: false, success: false, error: true };
   }
 });
 </script>
