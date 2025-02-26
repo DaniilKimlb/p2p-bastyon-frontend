@@ -226,7 +226,7 @@ const submitPayment = form.handleSubmit(async (values) => {
   fetchState.value = { loading: true, success: false, error: false };
 
   try {
-    await api.fetcher("/add-payment", { method: "POST", data: values });
+    await api.fetcher("/add-payment", { method: "POST", data: {...values, details: values.details.map(d => ({...d, currency: [d.currency]}))} });
     fetchState.value = { loading: false, success: true, error: false };
     setTimeout(() => (isModalOpen.value = false), 1000);
   } catch (error) {
