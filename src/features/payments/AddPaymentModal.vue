@@ -125,7 +125,7 @@
           <!-- 🔹 Кнопка отправки -->
           <div class="text-right">
             <Button as-child type="submit" class="px-6 py-2" :disabled="fetchState.loading">
-              <button :disabled="fetchState.loading">
+              <button type="submit" :disabled="fetchState.loading">
                   <span v-if="fetchState.loading">Сохранение...</span>
                   <span v-else>Сохранить</span>
                 </button>
