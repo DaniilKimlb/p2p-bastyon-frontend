@@ -200,7 +200,7 @@ const form = useForm({
   initialValues: props.mePayment ? {
     ...props.mePayment,
     details: props.mePayment.details.map((r: any) => (
-    {currency: r.currency.at(), ...r})
+    {...r, currency: r.currency.at()})
   )} : {
     details: [
       {
