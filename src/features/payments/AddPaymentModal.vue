@@ -3,13 +3,11 @@
     <!-- Кнопка, открывающая диалог -->
     <Button @click="isModalOpen = true" class="mt-4">Настроить платеж</Button>
 
-    <!-- Модальное окно -->
     <Dialog v-model:open="isModalOpen">
+      <DialogHeader>
+        <DialogTitle>Настроить платеж</DialogTitle>
+      </DialogHeader>
       <DialogContent class="sm:max-w-[425px] grid-rows-[auto_minmax(0,1fr)_auto] p-2 max-h-[90dvh]">
-        <DialogHeader>
-          <DialogTitle>Настроить платеж</DialogTitle>
-        </DialogHeader>
-
         <!-- Форма Vee-Validate -->
         <form @submit="submitPayment" class="space-y-6 overflow-y-auto" novalidate>
           <!-- 🔹 Основные настройки платежа -->
@@ -126,10 +124,12 @@
 
           <!-- 🔹 Кнопка отправки -->
           <div class="text-right">
-            <Button type="submit" class="px-6 py-2" :disabled="fetchState.loading">
-              <span v-if="fetchState.loading">Сохранение...</span>
-              <span v-else>Сохранить</span>
-            </Button>
+            <Button as-child type="submit" class="px-6 py-2" :disabled="fetchState.loading">
+              <button :disabled="fetchState.loading">
+                  <span v-if="fetchState.loading">Сохранение...</span>
+                  <span v-else>Сохранить</span>
+                </button>
+              </Button>
           </div>
 
           <!-- Статус запроса -->
@@ -188,7 +188,35 @@ const paymentSchema = computed(() =>
   )
 );
 
-const form = useForm({ validationSchema: paymentSchema });
+interface Props {
+  mePayment: any
+}
+
+const props = withDefaults(defineProps<Props>(), {})
+
+const form = useForm({
+  validationSchema: paymentSchema,
+  initialValues: props.mePayment ? {
+    ...props.mePayment,
+    details: props.mePayment.details.map((r: any) => (
+    {currency: r.currency?.[0], ...r})
+  )} : {
+    details: [
+      {
+        currency: "",
+        paymentMethod: "",
+        language: "",
+        instructions: "",
+      },
+    ],
+    minPkoin: "",
+    maxPkoin: "",
+    margin: "",
+    telegram: "",
+    transferTime: "",
+  },
+});
+
 
 const { fields, push, remove } = useFieldArray("details");
 const isModalOpen = ref(false);
