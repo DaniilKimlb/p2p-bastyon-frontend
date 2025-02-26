@@ -195,11 +195,12 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {})
 
 const form = useForm({
+  keepValuesOnUnmount: true,
   validationSchema: paymentSchema,
   initialValues: props.mePayment ? {
     ...props.mePayment,
     details: props.mePayment.details.map((r: any) => (
-    {currency: r.currency?.[0], ...r})
+    {currency: r.currency.at(), ...r})
   )} : {
     details: [
       {
