@@ -37,6 +37,7 @@ async function updateOrderStatus(status: 'paid' | 'canceled') {
 
     if (status === 'paid') {
       const paymentResult = await SdkService.payment([{address: orderData.value.counterpartyAddress, amount: orderData.value.fiatPrice / orderData.value.unitPrice }])
+      console.log(paymentResult, 'paymentResult')
       if (!paymentResult.completed){
         orderState.value = 'failed'
         return
