@@ -46,6 +46,8 @@ watchEffect(() => {
 
 const columns = computed(() =>
   getOrderColumns(({orderId}) => {
+    console.log(orderId, 'orderId')
+    console.log(props.mePayment.id, 'paymentId')
     router.push({
       path: '/trade/order/pay/confirm',
       query: {
