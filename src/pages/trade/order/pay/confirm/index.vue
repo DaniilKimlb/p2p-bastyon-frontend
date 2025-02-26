@@ -106,7 +106,7 @@ const isMaker = computed(() => orderData.value?.makerAddress === account.value.a
             <div class="flex flex-col">
               <span class="text-muted-foreground">Сумма в {{ orderData?.currency }} </span>
               <span class="font-semibold">{{
-                orderData.value.fiatPrice / orderData.value.unitPrice
+                orderData.fiatPrice / orderData.unitPrice
                 }} {{ orderData?.currency }}</span>
             </div>
           </div>
