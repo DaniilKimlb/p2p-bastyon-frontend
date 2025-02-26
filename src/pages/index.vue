@@ -13,7 +13,7 @@ onMounted(async () => {
 })
 watchEffect(() => {
   if(!account.value) return
-  if(account.value?.address !== 'PKzsFvWfvbKoAvBw8Wh1oGPMTChSwwN3aU'){
+  if(account.value?.address !== 'PPVgnH4N22yriNu9HsvViXjshNFy3BLqoJ'){
   router.push(`trade/all-payments/`)
 }else {
   router.push('/trade/orders')
