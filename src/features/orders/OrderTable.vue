@@ -48,13 +48,7 @@ const columns = computed(() =>
   getOrderColumns(({orderId}) => {
     console.log(orderId, 'orderId')
     console.log(props.mePayment.id, 'paymentId')
-    router.push({
-      path: '/trade/order/pay/confirm',
-      query: {
-        orderId,
-        paymentId: props.mePayment.id
-      }
-    });
+    router.push(`/trade/order/pay/confirm?orderId=${orderId}&paymentId=${props.mePayment.id}`);
   })
 );
 const tableOptions = computed(() => getTableOptions(orderData, columns.value));
@@ -76,11 +70,6 @@ const goToPrevPage = () => {
   }
 };
 
-const goToPage = (pageNumber: number) => {
-  if (pageNumber >= 1 && pageNumber <= totalPages.value) {
-    page.value = pageNumber;
-  }
-};
 </script>
 <template>
   <div v-if="isLoading" class="text-center py-10">Загрузка данных...</div>
