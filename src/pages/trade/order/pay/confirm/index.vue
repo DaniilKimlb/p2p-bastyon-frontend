@@ -43,9 +43,8 @@ async function updateOrderStatus(status: 'paid' | 'canceled') {
         amount: orderData.value.fiatPrice / orderData.value.unitPrice
       }])
 
-      console.log(paymentResult)
 
-      if (!paymentResult.completed){
+      if (paymentResult.rejected !== false){
         orderState.value = 'failed'
         updatingStatus.value = false
         return
