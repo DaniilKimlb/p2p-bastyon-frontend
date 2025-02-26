@@ -10,7 +10,7 @@ const fetchState = ref<'idle' | 'loading' | 'success' | 'error'>('idle')
 const fetchMePayment = async () => {
   fetchState.value = 'loading'
   try {
-    const response = await api.fetcher<{ data: any }>('/payments/me', {
+    const response = await api.fetcher<{ data: any }>('/payments/address/me', {
       method: 'GET',
     })
     mePayment.value = response.data
