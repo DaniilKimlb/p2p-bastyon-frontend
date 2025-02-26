@@ -94,12 +94,12 @@ const isMaker = computed(() => orderData.value?.makerAddress === account.value.a
 
           <div class="grid grid-cols-2 gap-4">
             <div class="flex flex-col">
-              <span class="text-muted-foreground">Цена</span>
-              <span class="font-semibold">{{ orderData?.unitPrice }} {{ orderData?.currency }}</span>
+              <span class="text-muted-foreground">Цена в {{ orderData?.fiatCurrency }} за ед.</span>
+              <span class="font-semibold">{{ orderData?.unitPrice.toFixed(2) }} {{ orderData?.currency }}</span>
             </div>
             <div class="flex flex-col">
               <span class="text-muted-foreground">Сумма в фиате</span>
-              <span class="font-semibold">{{ orderData?.amountFlat }} {{ orderData?.fiatCurrency }}</span>
+              <span class="font-semibold">{{ orderData?.fiatPrice }} {{ orderData?.fiatCurrency }}</span>
             </div>
           </div>
         </div>
