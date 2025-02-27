@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Clock, Loader2, Check, X } from 'lucide-vue-next'
+import { Clock, Loader2, Check, X, ArrowLeft } from 'lucide-vue-next'
 import { ref, onMounted, computed } from 'vue'
 import { SdkService } from '~/composables'
 import { api } from '~/composables/api'
@@ -55,6 +55,36 @@ async function updateOrderStatus(status: 'paid' | 'canceled') {
       method: 'PATCH',
       data: { status },
     })
+
+
+    const pathToConfirm = `/trade/order/pay/confirm?paymentId=${orderData.value.paymentId}&orderId=${orderData.value.id}`
+    const confirmLink = `https://bastyon.com/application?id=p2p.pkoin.app&p=${hexEncode(pathToConfirm)}`
+    const userProfiles = await SdkService.rpc('getuserprofile', [orderData.value?.counterpartyAddress])
+
+
+   const messagesForBuyer = {
+      ru: {
+        paid: `✅ Ваша оплата подтверждена!
+        Продавец отправил ${orderData.value.fiatPrice / orderData.value.unitPrice} PKOIN на ваш адрес: ${orderData.value.counterpartyAddress}.
+        ➡️ Посмотреть статус сделки: ${confirmLink}`,
+
+        canceled: `❌ Ваш платеж был отклонен!
+        Продавец отменил сделку.`
+      },
+      default: {
+        paid: `✅ Your payment has been confirmed!
+        The seller has sent ${orderData.value.fiatPrice / orderData.value.unitPrice} PKOIN to your address: ${orderData.value.counterpartyAddress}.
+        ➡️ View transaction status: ${confirmLink}`,
+
+        canceled: `❌ Your payment was rejected!
+        The seller canceled the transaction.`
+      }
+    }
+    const buyerRoom = await SdkService.getOrCreateRoom(orderData.value.counterpartyAddress)
+    if (buyerRoom?.roomid) {
+      //@ts-ignore
+      await SdkService.sendMessage(buyerRoom.roomid, messagesForBuyer[userProfiles?.[0]?.l]?.[status] || messagesForBuyer.default[status])
+    }
     orderState.value = status
   } catch (error) {
     console.error('Ошибка обновления статуса:', error)
@@ -70,6 +100,13 @@ const isMaker = computed(() => orderData.value?.makerAddress === account.value.a
 <template>
   <div class="flex justify-center items-center">
     <div class="w-full max-w-2xl text-foreground p-6 rounded-2xl">
+       <div class="mb-4">
+        <Button variant="outline" as-child>
+          <router-link to='/'>
+            <ArrowLeft class="w-5 h-5 mr-2" /> Назад
+          </router-link>
+        </Button>
+      </div>
       <!-- 🔄 Загрузка данных -->
       <div v-if="orderState === 'loading'">
         <h2 class="text-2xl font-semibold mb-6 text-center">Загружаем данные...</h2>

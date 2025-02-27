@@ -6,7 +6,17 @@ import { api } from '~/composables/api'
 import { makers } from '~/config'
 
 const mePayment = ref()
+const account = ref()
+const router = useRouter()
 const fetchState = ref<'idle' | 'loading' | 'success' | 'error'>('idle')
+
+
+onMounted(async () => {
+  account.value = await SdkService.getAccount()
+  if (!makers.includes(account.value.address)) {
+    router.push('/trade/all-payments')
+  }
+})
 
 const fetchMePayment = async () => {
   fetchState.value = 'loading'

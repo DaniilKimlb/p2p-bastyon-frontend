@@ -3,6 +3,7 @@ import { Clock, FileText, Loader2, Upload, XCircle } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { SdkService } from '~/composables'
 import { api } from '~/composables/api'
+import { hexEncode } from '~/composables/hex'
 const orderState = ref<
   'created' | 'uploading' | 'sending' | 'failed' | 'waiting' | 'completed'
 >('created')
@@ -17,7 +18,6 @@ const router = useRouter()
 onMounted(() => {
   //@ts-ignore
   orderData.value = JSON.parse(sessionStorage.getItem('orderData'))
-  console.log(orderData.value, 'orderData')
 })
 
 function handleFileUpload(event: Event) {
@@ -67,7 +67,6 @@ async function confirmPayment() {
   formData.append('counterpartyAddress', account?.address ?? '')
   formData.append('paymentMethod', orderData.value.paymentMethod)
   formData.append('currency', orderData.value.currency)
-
   try {
     const response = await api.fetcher<any>(`/payments/${route.params.id}/add-order`, {
       method: 'POST',
@@ -80,16 +79,23 @@ async function confirmPayment() {
 
     const data = await SdkService.getOrCreateRoom(orderData.value.makerAddress ?? '')
     const userProfiles = await SdkService.rpc('getuserprofile', [account?.address])
+    const pathToConfirm = `/trade/order/pay/confirm?orderId=${response.order?.id}&paymentId=${response.order.paymentId}`
+  const messagesForSend = {
+  ru:`Ваши PKOIN были куплены!
+    Покупатель оплатил ${response.order?.fiatPrice} ${response.order?.fiatCurrency} через ${response.order?.paymentMethod}.
+    Пожалуйста, подтвердите сделку и переведите ${response.order?.fiatPrice / response.order?.unitPrice} PKOIN на адрес покупателя: ${response.order?.counterpartyAddress}.
+    ➡️ Подтвердить сделку: https://bastyon.com/application?id=p2p.pkoin.app&p=${hexEncode(pathToConfirm)}`,
 
-   const messagesForSend = {
-  ru: 'Ваши PKOIN были куплены. Пожалуйста, подтвердите сделку',
-  default: 'Your PKOIN have been purchased. Please confirm the transaction',
+  default: `Your PKOIN have been purchased!
+    The buyer has paid ${response.order?.fiatPrice} ${response.order?.fiatCurrency} via ${response.order?.paymentMethod}.
+    Please confirm the transaction and send ${response.order?.fiatPrice / response.order?.unitPrice} PKOIN to the buyer's address: ${response.order?.counterpartyAddress}.
+    ➡️ Confirm the transaction: https://bastyon.com/application?id=p2p.pkoin.app&p=${hexEncode(pathToConfirm)}`
 }
     if (data?.roomid) {
       //@ts-ignore
       await SdkService.sendMessage(data.roomid, messagesForSend?.[userProfiles?.[0]?.l] ||messagesForSend?.default )
     }
-    router.push(`/trade/order/pay/confirm?orderId=${response.order?.id}&paymentId=${response.order.paymentId}`)
+    router.push(pathToConfirm)
     orderState.value = 'waiting'
   }
   catch (error) {
@@ -148,7 +154,7 @@ function retryUpload() {
 
         <div class="mt-6">
           <Button variant="outline" class="w-full text-lg" @click="orderState = 'uploading'">
-            Оплатили?
+            Подтвердить оплату
           </Button>
         </div>
       </div>
