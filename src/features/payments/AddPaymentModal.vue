@@ -4,10 +4,10 @@
     <Button @click="isModalOpen = true" class="mt-4">Настроить платеж</Button>
 
     <Dialog v-model:open="isModalOpen">
-      <DialogHeader>
-        <DialogTitle>Настроить платеж</DialogTitle>
-      </DialogHeader>
       <DialogContent class="sm:max-w-[425px] grid-rows-[auto_minmax(0,1fr)_auto] p-2 max-h-[90dvh]">
+        <DialogHeader>
+          <DialogTitle>Настроить платеж</DialogTitle>
+        </DialogHeader>
         <!-- Форма Vee-Validate -->
         <form @submit="submitPayment" class="space-y-6 overflow-y-auto" novalidate>
           <!-- 🔹 Основные настройки платежа -->
