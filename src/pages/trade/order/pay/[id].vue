@@ -81,15 +81,17 @@ async function confirmPayment() {
     const userProfiles = await SdkService.rpc('getuserprofile', [account?.address])
     const pathToConfirm = `/trade/order/pay/confirm?orderId=${response.order?.id}&paymentId=${response.order.paymentId}`
   const messagesForSend = {
-  ru:`Ваши PKOIN были куплены!
-    Покупатель оплатил ${response.order?.fiatPrice} ${response.order?.fiatCurrency} через ${response.order?.paymentMethod}.
-    Пожалуйста, подтвердите сделку и переведите ${response.order?.fiatPrice / response.order?.unitPrice} PKOIN на адрес покупателя: ${response.order?.counterpartyAddress}.
-    ➡️ Подтвердить сделку: https://bastyon.com/application?id=p2p.pkoin.app&p=${hexEncode(pathToConfirm)}`,
+  ru:`
+Ваши PKOIN были куплены!
+Покупатель оплатил ${response.order?.fiatPrice} ${response.order?.fiatCurrency} через ${response.order?.paymentMethod}.
+Пожалуйста, подтвердите сделку и переведите ${response.order?.fiatPrice / response.order?.unitPrice} PKOIN на адрес покупателя: ${response.order?.counterpartyAddress}.
+➡️ Подтвердить сделку: https://bastyon.com/application?id=p2p.pkoin.app&p=${hexEncode(pathToConfirm)}`,
 
-  default: `Your PKOIN have been purchased!
-    The buyer has paid ${response.order?.fiatPrice} ${response.order?.fiatCurrency} via ${response.order?.paymentMethod}.
-    Please confirm the transaction and send ${response.order?.fiatPrice / response.order?.unitPrice} PKOIN to the buyer's address: ${response.order?.counterpartyAddress}.
-    ➡️ Confirm the transaction: https://bastyon.com/application?id=p2p.pkoin.app&p=${hexEncode(pathToConfirm)}`
+  default: `
+Your PKOIN have been purchased!
+The buyer has paid ${response.order?.fiatPrice} ${response.order?.fiatCurrency} via ${response.order?.paymentMethod}.
+Please confirm the transaction and send ${response.order?.fiatPrice / response.order?.unitPrice} PKOIN to the buyer's address: ${response.order?.counterpartyAddress}.
+➡️ Confirm the transaction: https://bastyon.com/application?id=p2p.pkoin.app&p=${hexEncode(pathToConfirm)}`
 }
     if (data?.roomid) {
       //@ts-ignore

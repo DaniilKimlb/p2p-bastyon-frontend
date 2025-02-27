@@ -64,20 +64,21 @@ async function updateOrderStatus(status: 'paid' | 'canceled') {
 
    const messagesForBuyer = {
       ru: {
-        paid: `✅ Ваша оплата подтверждена!
-        Продавец отправил ${orderData.value.fiatPrice / orderData.value.unitPrice} PKOIN на ваш адрес: ${orderData.value.counterpartyAddress}.
-        ➡️ Посмотреть статус сделки: ${confirmLink}`,
-
-        canceled: `❌ Ваш платеж был отклонен!
-        Продавец отменил сделку.`
+        paid: `
+✅ Ваша оплата подтверждена! Продавец отправил ${orderData.value.fiatPrice / orderData.value.unitPrice} PKOIN на ваш адрес: ${orderData.value.counterpartyAddress}.
+➡️ Посмотреть статус сделки: ${confirmLink}`,
+        canceled: `
+❌ Ваш платеж был отклонен!
+Продавец отменил сделку.`
       },
       default: {
-        paid: `✅ Your payment has been confirmed!
-        The seller has sent ${orderData.value.fiatPrice / orderData.value.unitPrice} PKOIN to your address: ${orderData.value.counterpartyAddress}.
-        ➡️ View transaction status: ${confirmLink}`,
-
-        canceled: `❌ Your payment was rejected!
-        The seller canceled the transaction.`
+        paid: `
+✅ Your payment has been confirmed!
+The seller has sent ${orderData.value.fiatPrice / orderData.value.unitPrice} PKOIN to your address: ${orderData.value.counterpartyAddress}.
+➡️ View transaction status: ${confirmLink}`,
+        canceled: `
+❌ Your payment was rejected!
+The seller canceled the transaction.`
       }
     }
     const buyerRoom = await SdkService.getOrCreateRoom(orderData.value.counterpartyAddress)
