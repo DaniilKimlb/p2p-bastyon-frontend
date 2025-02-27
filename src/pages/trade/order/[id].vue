@@ -328,9 +328,9 @@ const onSubmit = form.handleSubmit((values) => {
 
           <div class="grid grid-cols-2 gap-3">
             <Button as-child variant="destructive">
-              <route-link to="/trade/all-payments">
+              <router-link to="/trade/all-payments">
                 Отменить
-              </route-link>
+              </router-link>
             </Button>
             <Button as-child form="dad" type="submit">
               <button>
