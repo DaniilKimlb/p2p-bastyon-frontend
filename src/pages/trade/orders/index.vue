@@ -3,6 +3,7 @@ import OrderTable from '~/features/orders/OrderTable.vue'
 import AddPaymentModal from '~/features/payments/AddPaymentModal.vue'
 import { ref, onMounted } from 'vue'
 import { api } from '~/composables/api'
+import { makers } from '~/config'
 
 const mePayment = ref()
 const fetchState = ref<'idle' | 'loading' | 'success' | 'error'>('idle')

@@ -82,8 +82,8 @@ async function confirmPayment() {
     const userProfiles = await SdkService.rpc('getuserprofile', [account?.address])
 
    const messagesForSend = {
-  ru: 'Ваши PKOIN были куплены. Пожалуйста, подтвердите сделку по следующей ссылке: [ссылка на подтверждение]',
-  default: 'Your PKOIN have been purchased. Please confirm the transaction using the following link: [confirmation link]',
+  ru: 'Ваши PKOIN были куплены. Пожалуйста, подтвердите сделку',
+  default: 'Your PKOIN have been purchased. Please confirm the transaction',
 }
     if (data?.roomid) {
       //@ts-ignore
