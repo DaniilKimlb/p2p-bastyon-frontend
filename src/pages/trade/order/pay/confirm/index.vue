@@ -44,7 +44,7 @@ async function updateOrderStatus(status: 'paid' | 'canceled') {
       }])
 
 
-      if (paymentResult.rejected !== false){
+      if (paymentResult.rejected === false){
         orderState.value = 'failed'
         updatingStatus.value = false
         return
