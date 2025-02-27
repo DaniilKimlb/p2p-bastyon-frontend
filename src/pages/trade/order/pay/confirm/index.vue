@@ -157,9 +157,11 @@ const isMaker = computed(() => orderData.value?.makerAddress === account.value.a
         <!-- 🔄 Кнопки подтверждения/отмены -->
         <div v-if="orderState === 'pending'" class="grid grid-cols-2 gap-3 mt-6">
           <Button variant="destructive" @click="updateOrderStatus('canceled')" :disabled="updatingStatus">
+            <Loader2 v-if="updatingStatus" class="w-5 h-5 animate-spin" />
             <X class="w-5 h-5 mr-2" /> Отклонить
           </Button>
           <Button variant="secondary" @click="updateOrderStatus('paid')" :disabled="updatingStatus">
+            <Loader2 v-if="updatingStatus" class="w-5 h-5 animate-spin" />
             <Check class="w-5 h-5 mr-2" /> Подтвердить
           </Button>
         </div>
