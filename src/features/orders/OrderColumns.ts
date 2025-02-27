@@ -49,11 +49,10 @@ export function getOrderColumns(
       header: "Покупатель",
       cell: ({ row }) =>
         h(
-          "a",
+          "span",
           {
             href: "#",
-            class: "text-blue-500 hover:underline",
-            onClick: () => onView({orderId: row.original.id}),
+            class: "text-blue-500",
           },
           row.original.counterpartyAddress ?? "-",
         ),
@@ -77,7 +76,10 @@ export function getOrderColumns(
         h(
           "a",
           {
-            href: `${APP_API_URL}${row.original.paymentProof}`,
+            href: '',
+            onClick: () => {
+              SdkService.openExternalLink(`${APP_API_URL}${row.original.paymentProof}`)
+            },
             target: "_blank",
             class: "text-blue-500 hover:underline",
           },
@@ -94,10 +96,10 @@ export function getOrderColumns(
                 variant: "secondary",
                 onClick: () => {
                   row.toggleExpanded();
-                  router.push('/trade/order_copy_copy')
+                  onView({orderId: row.original.id})
                 },
               },
-              () => "Открыть",
+              () => "Открыть деталь оплаты",
             ),
         }),
   ];
