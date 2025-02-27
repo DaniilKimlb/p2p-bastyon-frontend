@@ -3,5 +3,5 @@
   "name": "P2P PKOIN app",
   "description": "An application for P2P exchange of PKOIN.",
   "author": "PPVgnH4N22yriNu9HsvViXjshNFy3BLqoJ",
-  "permissions": ["account", "payment", "sign", "chat", "externalLink"]
+  "permissions": ["account", "payment", "sign", "chat", "externallink"]
 }
