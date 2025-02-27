@@ -112,8 +112,8 @@ const isMaker = computed(() => orderData.value?.makerAddress === account.value.a
         </div>
 
         <div v-if="paymentProof" class="mt-6">
-          <Button asChild>
-            <a :href="APP_API_URL + paymentProof" target="__blank" alt="Чек">Посмотреть чек оплаты</a>
+          <Button @click="SdkService.openExternalLink(APP_API_URL + paymentProof)">
+            Посмотреть чек оплаты
           </Button>
         </div>
 

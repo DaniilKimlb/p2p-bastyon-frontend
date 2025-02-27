@@ -39,7 +39,10 @@ onMounted(() => {
     <div class="mb-2">
       <AddPaymentModal :me-payment="mePayment" />
     </div>
-    <OrderTable :me-payment="mePayment" />
+    <OrderTable  v-if="mePayment" :me-payment="mePayment" />
+    <div v-else class="text-center py-4 text-muted-foreground">
+      🕵️ Ваши платежи не настроены.
+    </div>
   </template>
   <div v-else class="text-center py-4">
     🕵️ Нет данных.
