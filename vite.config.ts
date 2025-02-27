@@ -17,7 +17,7 @@ export default defineConfig({
       '~/': `${path.resolve(__dirname, 'src')}/`,
     },
   },
-  base: '/p2p',
+  base: '/',
   plugins: [
     VueMacros({
       defineOptions: false,
