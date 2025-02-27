@@ -41,7 +41,7 @@ export function getPaymentColumns(
               class:
                 "ml-9 text-muted-foreground text-xs mt-1 flex items-center gap-1",
             },
-            [h(Timer, { class: "h-4 w-4" }), row.original.transferTime],
+            [h(Timer, { class: "h-4 w-4" }), `${row.original.transferTime} мин.`],
           ),
         ];
       },

@@ -204,7 +204,7 @@ const onSubmit = form.handleSubmit((values) => {
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
         <div>
           <div class="text-xl font-medium">
-            15 мин.
+            {{paymentData?.transferTime}} мин.
           </div>
           <div class="text-sm text-muted-foreground">
             Срок оплаты
