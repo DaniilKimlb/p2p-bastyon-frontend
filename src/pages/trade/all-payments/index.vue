@@ -3,6 +3,6 @@ import PaymentTable from '~/features/payments/PaymentTable.vue'
 </script>
 
 <template>
-  <AddPaymentModal/>
+  <AddPaymentModal />
   <PaymentTable />
 </template>

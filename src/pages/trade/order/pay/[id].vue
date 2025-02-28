@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import { SdkService } from '~/composables'
 import { api } from '~/composables/api'
 import { hexEncode } from '~/composables/hex'
+
 const orderState = ref<
   'created' | 'uploading' | 'sending' | 'failed' | 'waiting' | 'completed'
 >('created')
@@ -16,7 +17,7 @@ const route = useRoute()
 const router = useRouter()
 
 onMounted(() => {
-  //@ts-ignore
+  // @ts-ignore
   orderData.value = JSON.parse(sessionStorage.getItem('orderData'))
 })
 
@@ -45,8 +46,6 @@ function handleFileUpload(event: Event) {
     }
   }
 }
-
-
 
 async function confirmPayment() {
   if (!paymentProof.value)
@@ -80,22 +79,22 @@ async function confirmPayment() {
     const data = await SdkService.getOrCreateRoom(orderData.value.makerAddress ?? '')
     const userProfiles = await SdkService.rpc('getuserprofile', [account?.address])
     const pathToConfirm = `/trade/order/pay/confirm?orderId=${response.order?.id}&paymentId=${response.order.paymentId}`
-  const messagesForSend = {
-  ru:`
+    const messagesForSend = {
+      ru: `
 Ваши PKOIN были куплены!
 Покупатель оплатил ${response.order?.fiatPrice} ${response.order?.fiatCurrency} через ${response.order?.paymentMethod}.
 Пожалуйста, подтвердите сделку и переведите ${response.order?.fiatPrice / response.order?.unitPrice} PKOIN на адрес покупателя: ${response.order?.counterpartyAddress}.
 ➡️ Подтвердить сделку: https://bastyon.com/application?id=p2p.pkoin.app&p=${hexEncode(pathToConfirm)}`,
 
-  default: `
+      default: `
 Your PKOIN have been purchased!
 The buyer has paid ${response.order?.fiatPrice} ${response.order?.fiatCurrency} via ${response.order?.paymentMethod}.
 Please confirm the transaction and send ${response.order?.fiatPrice / response.order?.unitPrice} PKOIN to the buyer's address: ${response.order?.counterpartyAddress}.
-➡️ Confirm the transaction: https://bastyon.com/application?id=p2p.pkoin.app&p=${hexEncode(pathToConfirm)}`
-}
+➡️ Confirm the transaction: https://bastyon.com/application?id=p2p.pkoin.app&p=${hexEncode(pathToConfirm)}`,
+    }
     if (data?.roomid) {
-      //@ts-ignore
-      await SdkService.sendMessage(data.roomid, messagesForSend?.[userProfiles?.[0]?.l] ||messagesForSend?.default )
+      // @ts-ignore
+      await SdkService.sendMessage(data.roomid, messagesForSend?.[userProfiles?.[0]?.l] || messagesForSend?.default)
     }
     router.push(pathToConfirm)
     orderState.value = 'waiting'
@@ -150,7 +149,7 @@ function retryUpload() {
             Инструкция по оплате
           </h3>
           <p class="text-sm">
-           {{ orderData?.makerConditions }}
+            {{ orderData?.makerConditions }}
           </p>
         </div>
 

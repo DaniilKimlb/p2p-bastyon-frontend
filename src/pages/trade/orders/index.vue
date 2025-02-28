@@ -1,15 +1,14 @@
 <script lang="ts" setup>
-import OrderTable from '~/features/orders/OrderTable.vue'
-import AddPaymentModal from '~/features/payments/AddPaymentModal.vue'
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { api } from '~/composables/api'
 import { makers } from '~/config'
+import OrderTable from '~/features/orders/OrderTable.vue'
+import AddPaymentModal from '~/features/payments/AddPaymentModal.vue'
 
 const mePayment = ref()
 const account = ref()
 const router = useRouter()
 const fetchState = ref<'idle' | 'loading' | 'success' | 'error'>('idle')
-
 
 onMounted(async () => {
   account.value = await SdkService.getAccount()
@@ -18,7 +17,7 @@ onMounted(async () => {
   }
 })
 
-const fetchMePayment = async () => {
+async function fetchMePayment() {
   fetchState.value = 'loading'
   try {
     const response = await api.fetcher<{ data: any }>('/payments/address/me', {
@@ -26,7 +25,8 @@ const fetchMePayment = async () => {
     })
     mePayment.value = response.data
     fetchState.value = 'success'
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Ошибка при загрузке данных:', error)
     fetchState.value = 'error'
   }
@@ -38,7 +38,6 @@ onMounted(() => {
 </script>
 
 <template>
-
   <div v-if="fetchState === 'loading'" class="text-center py-4">
     ⏳ Загрузка данных...
   </div>
@@ -50,7 +49,7 @@ onMounted(() => {
     <div class="mb-2">
       <AddPaymentModal :me-payment="mePayment" />
     </div>
-    <OrderTable  v-if="mePayment" :me-payment="mePayment" />
+    <OrderTable v-if="mePayment" :me-payment="mePayment" />
     <div v-else class="text-center py-4 text-muted-foreground">
       🕵️ Ваши платежи не настроены.
     </div>

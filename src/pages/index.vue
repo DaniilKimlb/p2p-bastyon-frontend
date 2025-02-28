@@ -13,17 +13,19 @@ onMounted(async () => {
   account.value = await SdkService.getAccount()
 })
 watchEffect(() => {
-
-  if(!account.value) return
-  if(!makers.includes(account.value?.address)){
-  router.push(`trade/all-payments/`)
-}else {
-  router.push('/trade/orders')
-}
+  if (!account.value)
+    return
+  if (!makers.includes(account.value?.address)) {
+    router.push(`trade/all-payments/`)
+  }
+  else {
+    router.push('/trade/orders')
+  }
 })
-
 </script>
 
 <template>
-  <div class="text-center py-10">Загрузка данных...</div>
+  <div class="text-center py-10">
+    Загрузка данных...
+  </div>
 </template>

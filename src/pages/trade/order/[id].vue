@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { PaymentMethod } from '~/features/payments/types/PaymentMethod'
 import { toTypedSchema } from '@vee-validate/zod'
+import Big from 'big.js'
 import { ChevronDown, Landmark, Loader2 } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
 import { computed, ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import * as z from 'zod'
-import { FormField, FormItem, FormControl, FormMessage } from '~/components/ui/form'
-import Big from 'big.js'
-import { api } from "~/composables/api";
+import { FormControl, FormField, FormItem, FormMessage } from '~/components/ui/form'
+import { api } from '~/composables/api'
 
 const { pkoinPrice } = usePKoinPrice()
 const route = useRoute()
@@ -28,7 +28,7 @@ async function fetchPaymentDetails() {
       return
     }
     const response = await api.fetcher<any>(`/payments/${route.params.id}`, {
-      method: "GET"
+      method: 'GET',
     })
     paymentData.value = response.data
   }
@@ -66,35 +66,35 @@ const maxAmountFiat = computed(() =>
 )
 
 const formSchema = computed(() => toTypedSchema(
-    z.object({
-      amountFiat: z.number().min(
-        minAmountFiat.value,
-        `Минимальная сумма: ${minAmountFiat.value} ${selectedCurrency.value}`,
-      ).max(
-        maxAmountFiat.value,
-        `Максимальная сумма: ${maxAmountFiat.value} ${selectedCurrency.value}`,
-      ),
-      amount: z.number().min(
-        minPkoin.value ?? 0,
-        `Минимальная сумма: ${minPkoin.value} PKOIN`,
-      ).max(
-        maxPkoin.value ?? 0,
-        `Максимальная сумма: ${maxPkoin.value} PKOIN`,
-      ),
-      paymentMethod: z.string().min(1, 'Выберите способ оплаты'),
-    }),
+  z.object({
+    amountFiat: z.number().min(
+      minAmountFiat.value,
+      `Минимальная сумма: ${minAmountFiat.value} ${selectedCurrency.value}`,
+    ).max(
+      maxAmountFiat.value,
+      `Максимальная сумма: ${maxAmountFiat.value} ${selectedCurrency.value}`,
+    ),
+    amount: z.number().min(
+      minPkoin.value ?? 0,
+      `Минимальная сумма: ${minPkoin.value} PKOIN`,
+    ).max(
+      maxPkoin.value ?? 0,
+      `Максимальная сумма: ${maxPkoin.value} PKOIN`,
+    ),
+    paymentMethod: z.string().min(1, 'Выберите способ оплаты'),
+  }),
 ))
 
 const form = useForm({
   validationSchema: formSchema,
 })
 
-
 const [amountFiat] = form.defineField('amountFiat')
 const [amount] = form.defineField('amount')
 
 const receivedPkoin = computed(() => {
-  if (!pkoinPrice.value?.RUB || !paymentData.value?.margin) return 0
+  if (!pkoinPrice.value?.RUB || !paymentData.value?.margin)
+    return 0
 
   return new Big(amountFiat.value ?? 0)
     .div(new Big(pkoinPrice.value.RUB).times(paymentData.value.margin))
@@ -102,7 +102,8 @@ const receivedPkoin = computed(() => {
 })
 
 const receivedFiat = computed(() => {
-  if (!pkoinPrice.value?.RUB || !paymentData.value?.margin) return 0
+  if (!pkoinPrice.value?.RUB || !paymentData.value?.margin)
+    return 0
 
   return new Big(amount.value ?? 0)
     .times(new Big(pkoinPrice.value.RUB).times(paymentData.value.margin))
@@ -160,11 +161,11 @@ const onSubmit = form.handleSubmit((values) => {
     paymentMethod: values.paymentMethod,
     currency: 'PKOIN',
     makerConditions: makerConditionsText.value,
-    makerAddress: paymentData.value?.address
+    makerAddress: paymentData.value?.address,
   }
 
   sessionStorage.setItem('orderData', JSON.stringify(orderData))
-  //@ts-ignore
+  // @ts-ignore
   router.push(`/trade/order/pay/${route.params.id}`)
 })
 </script>
@@ -172,13 +173,14 @@ const onSubmit = form.handleSubmit((values) => {
 <template>
   <div v-if="isLoading || !pkoinPrice">
     <h2 class="text-2xl font-semibold mb-6 text-xcenter">
-    Загружаем данные...
-        </h2>
-        <div class="flex items-center justify-center">
-          <Loader2 class="text-primary w-8 h-8 animate-spin" />
-        </div>
+      Загружаем данные...
+    </h2>
+    <div class="flex items-center justify-center">
+      <Loader2 class="text-primary w-8 h-8 animate-spin" />
     </div>
-  <Card v-else
+  </div>
+  <Card
+    v-else
     class="max-w-screen-xl border-none mx-auto md:flex space-y-6 md:space-y-0 bg-card text-foreground"
   >
     <div class="md:flex-1 md:pr-6">
@@ -204,7 +206,7 @@ const onSubmit = form.handleSubmit((values) => {
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
         <div>
           <div class="text-xl font-medium">
-            {{paymentData?.transferTime}} мин.
+            {{ paymentData?.transferTime }} мин.
           </div>
           <div class="text-sm text-muted-foreground">
             Срок оплаты
@@ -227,11 +229,11 @@ const onSubmit = form.handleSubmit((values) => {
         <div class="flex items-center justify-between mb-4">
           <span class="text-muted-foreground">Цена</span>
           <span class="text-green-500 text-xl">{{
-((pkoinPrice?.RUB ?? 0) * (paymentData?.margin || 0)).toFixed(2)
+            ((pkoinPrice?.RUB ?? 0) * (paymentData?.margin || 0)).toFixed(2)
           }}</span>
         </div>
 
-        <form  id="dad" class="space-y-4" novalidate @submit="onSubmit">
+        <form id="dad" class="space-y-4" novalidate @submit="onSubmit">
           <div class="text-muted-foreground mb-2">
             Вы платите
           </div>
