@@ -1,0 +1,42 @@
+name: Deploy Web
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout git repository
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Prepare
+        run: |
+          npm i
+          npm run build
+      - name: Prepare archive
+        run: |
+          tar czf ./dist.tgz -C ./dist/ .
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist.tgz
+          path: ./dist.tgz
+
+  deploy:
+    needs: build
+    runs-on: p2p.frontent
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist.tgz
+      - name: Unpack artifact
+        run: |
+          rm -rf /data/p2p.frontend/*
+          tar xzf dist.tgz -C /data/p2p.frontend/ --no-same-owner
+      - name: Delete artifacts
+        run: rm -rf dist.tgz
